@@ -1,5 +1,10 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import SettingsButton from '../components/SettingsButton';
+import getApi from '../services';
+import { getToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -8,7 +13,19 @@ class Login extends React.Component {
       isDisabled: true,
       name: '',
       email: '',
+      redirect: false,
     };
+  }
+
+  handleClick = async (event) => {
+    event.preventDefault();
+    const response = await getApi();
+    const otherResponse = await response;
+    const { token } = otherResponse;
+    const { getTokenByProps } = this.props;
+    console.log(token);
+    getTokenByProps(token);
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   handleChange = ({ target }) => {
@@ -28,7 +45,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { name, email, isDisabled } = this.state;
+    const { name, email, isDisabled, redirect } = this.state;
     return (
       <form>
         <SettingsButton />
@@ -56,12 +73,26 @@ class Login extends React.Component {
           type="submit"
           data-testid="btn-play"
           disabled={ isDisabled }
+          onClick={ this.handleClick }
         >
           Play
         </button>
+        { redirect && <Redirect to="/game" /> }
       </form>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getTokenByProps: (token) => dispatch(getToken(token)),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.token,
+});
+
+Login.propTypes = {
+  getTokenByProps: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

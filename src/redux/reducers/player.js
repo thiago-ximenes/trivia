@@ -6,7 +6,6 @@ const INITIAL_STATE = {
     score: 0,
     gravatarEmail: '',
   },
-  token: '',
   ranking: [{
     name: '',
     score: 0,
@@ -18,6 +17,7 @@ const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SET_USER_PLAYER:
     return state;
+
   default:
     return state;
   }

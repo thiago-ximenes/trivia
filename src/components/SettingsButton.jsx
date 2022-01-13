@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
+import { Redirect } from 'react-router-dom';
 
 class SettingsButton extends React.Component {
   constructor() {
