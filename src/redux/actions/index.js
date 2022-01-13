@@ -11,9 +11,9 @@ export const setToken = (payload) => ({
   payload,
 });
 
-export function UserToken(dispatch) {
+export function userToken() {
   const url = 'https://opentdb.com/api_token.php?command=request';
-  return async function fetchToken() {
+  return async function fetchToken(dispatch) {
     try {
       const response = await fetch(url);
       const data = await response.json();

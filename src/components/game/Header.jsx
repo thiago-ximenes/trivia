@@ -5,7 +5,8 @@ class Header extends Component {
     return (
       <header>
         <img
-          src="https://images2.minutemediacdn.com/image/upload/c_fill,g_auto,h_1248,w_2220/v1555322954/shape/mentalfloss/trollhed.jpg?itok=UfrZLaEZ"
+          width="50%"
+          src="https://image.freepik.com/vetores-gratis/personagem-de-troll-bonito-de-pijama-azul-em-pe-e-segurando-a-lanterna-de-oleo-no-backround-do-campo-de-ilustracao-de-morango-estilo-cartoon_223337-418.jpg"
           alt="troll"
           data-testid="header-profile-picture"
         />

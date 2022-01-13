@@ -21,7 +21,7 @@ const player = (state = INITIAL_STATE, action) => {
   case SET_TOKEN:
     return {
       ...state,
-      token: action.token,
+      token: action.payload,
     };
   default:
     return state;
