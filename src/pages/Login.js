@@ -4,9 +4,9 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
+      isDisabled: true,
       name: '',
       email: '',
-      isDisabled: true,
     };
   }
 
