@@ -1,4 +1,5 @@
 import React from 'react';
+import SettingsButton from '../components/SettingsButton';
 
 class Login extends React.Component {
   constructor() {
@@ -30,6 +31,7 @@ class Login extends React.Component {
     const { name, email, isDisabled } = this.state;
     return (
       <form>
+        <SettingsButton />
         <label htmlFor="name">
           <input
             id="name"
