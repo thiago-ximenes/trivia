@@ -1,4 +1,4 @@
-import { SET_USER_PLAYER } from '../actions';
+import { SET_USER_PLAYER, SET_TOKEN } from '../actions';
 
 const INITIAL_STATE = {
   player: { name: '',
@@ -18,6 +18,11 @@ const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SET_USER_PLAYER:
     return state;
+  case SET_TOKEN:
+    return {
+      ...state,
+      token: action.token,
+    };
   default:
     return state;
   }
