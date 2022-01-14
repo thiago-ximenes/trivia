@@ -8,7 +8,7 @@ const INITIAL_STATE = [
   },
 ];
 
-const player = (state = INITIAL_STATE, action) => {
+const ranking = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SET_USER_RANKING_POSITION:
     return state;
@@ -17,4 +17,4 @@ const player = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default player;
+export default ranking;

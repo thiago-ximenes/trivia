@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/game/Header';
-import { getToken } from '../redux/actions/index';
+// import { getToken } from '../redux/actions/index';
 import getQuestion from '../services/getQuestion';
 
 class Game extends Component {
@@ -29,6 +29,8 @@ class Game extends Component {
   }
 
   render() {
+    console.log(this.state.gameSettings);
+    // const {gameSettings: { }} = this.state;
     return (
       <div>
         <Header />
