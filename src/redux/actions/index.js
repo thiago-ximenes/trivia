@@ -6,7 +6,6 @@ export const setUserPlayer = (payload) => ({
   payload,
 });
 
-
 export const getToken = (payload) => ({
   type: GET_TOKEN,
   payload,

@@ -23,9 +23,9 @@ class Login extends React.Component {
     const otherResponse = await response;
     const { token } = otherResponse;
     const { getTokenByProps } = this.props;
-    console.log(token);
     getTokenByProps(token);
     localStorage.setItem('token', JSON.stringify(token));
+    this.setState({ redirect: true });
   }
 
   handleChange = ({ target }) => {

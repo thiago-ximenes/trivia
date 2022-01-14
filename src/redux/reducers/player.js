@@ -1,4 +1,4 @@
-import { SET_USER_PLAYER, SET_TOKEN } from '../actions';
+import { SET_USER_PLAYER } from '../actions';
 
 const INITIAL_STATE = {
   player: { name: '',

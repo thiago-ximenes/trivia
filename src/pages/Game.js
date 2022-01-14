@@ -1,8 +1,8 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import Header from '../components/game/Header';
-import { userToken } from '../redux/actions/index';
+import { getToken } from '../redux/actions/index';
 import getQuestion from '../services/getQuestion';
 
 class Game extends Component {
@@ -14,15 +14,12 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const { getToken } = this.props;
+    const { token } = this.props;
     const { setGamesSettings } = this;
-    getToken();
-    setGamesSettings();
+    setGamesSettings(token);
   }
 
-  setGamesSettings = () => {
-    const { token } = this.props;
-    console.log(token);
+  setGamesSettings = (token) => {
     getQuestion(token)
       .then((data) => {
         this.setState({
@@ -32,6 +29,7 @@ class Game extends Component {
   }
 
   render() {
+    console.log(this.state.gameSettings);
     return (
       <div>
         <Header />
@@ -41,20 +39,13 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-  getToken: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getToken: () => dispatch(userToken()),
-  };
-}
-
 function mapStateToProps(state) {
   return {
-    token: state.player.token,
+    token: state.token,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps)(Game);
