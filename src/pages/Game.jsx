@@ -3,37 +3,48 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/game/Header';
 // import { getToken } from '../redux/actions/index';
-import getQuestion from '../services/getQuestion';
+import { getQuestion } from '../redux/actions';
 
 class Game extends Component {
   constructor() {
     super();
     this.state = {
-      gameSettings: [],
+      id: 0,
     };
   }
 
   componentDidMount() {
-    const { token } = this.props;
-    const { setGamesSettings } = this;
-    setGamesSettings(token);
+    const localToken = JSON.parse(localStorage.getItem('token'));
+    const { setGamesSettings } = this.props;
+    setGamesSettings(localToken);
   }
 
-  setGamesSettings = (token) => {
-    getQuestion(token)
-      .then((data) => {
-        this.setState({
-          gameSettings: data,
-        });
-      });
-  }
+  // setGamesSettings = (token) => {
+  //   this.setState({ isLoading: true });
+  //   getQuestion(token)
+  //     .then((data) => {
+  //       this.setState({
+  //         gameSettings: data,
+  //       });
+  //     });
+  //   this.setState({ isLoading: false });
+  // }
 
   render() {
-    console.log(this.state.gameSettings);
-    // const {gameSettings: { }} = this.state;
+    const { gameSettings } = this.props;
+    const { id } = this.state;
     return (
       <div>
         <Header />
+        { gameSettings.length > 0 && (
+          <div>{gameSettings[id].category}</div>
+        )}
+        <button
+          type="button"
+          onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
+        >
+          aperta aqui irmão
+        </button>
       </div>
     );
   }
@@ -43,10 +54,17 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
-function mapStateToProps(state) {
+function mapDispatchToProps(dispatch) {
   return {
-    token: state.token,
+    setGamesSettings: (token) => dispatch(getQuestion(token)),
   };
 }
 
-export default connect(mapStateToProps)(Game);
+function mapStateToProps(state) {
+  return {
+    token: state.token,
+    gameSettings: state.gameSettings,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
