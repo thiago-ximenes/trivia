@@ -1,17 +1,12 @@
 import { SET_USER_PLAYER } from '../actions';
 
-const INITIAL_STATE = {
-  player: { name: '',
+const INITIAL_STATE = [
+  { name: '',
     assertions: '',
     score: 0,
     gravatarEmail: '',
   },
-  ranking: [{
-    name: '',
-    score: 0,
-    picture: '',
-  }],
-};
+];
 
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {

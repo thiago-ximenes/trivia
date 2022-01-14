@@ -29,7 +29,6 @@ class Game extends Component {
   }
 
   render() {
-    console.log(this.state.gameSettings);
     return (
       <div>
         <Header />
