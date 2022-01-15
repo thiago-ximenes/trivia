@@ -5,14 +5,6 @@ import Header from '../components/game/Header';
 import { getQuestion } from '../redux/actions';
 
 class Game extends Component {
-  constructor() {
-    super();
-    this.state = {
-      id: 0,
-      allAnswer: [],
-    };
-  }
-
   componentDidMount() {
     const localToken = JSON.parse(localStorage.getItem('token'));
     const { setGamesSettings } = this.props;
@@ -21,60 +13,13 @@ class Game extends Component {
 
   // redirect para tela de login se []
 
-  getAllAnswer = () => {
-    const { gameSettings } = this.props;
-    const { id, allAnswer } = this.state;
-
-    if (gameSettings.length > 0) {
-      return this.setState({
-        allAnswer: '',
-      });
-    }
-  }
-
   render() {
-    const { gameSettings } = this.props;
-    const { id, allAnswer } = this.state;
-
-    // const answers = [...gameSettings[id].incorrect_answers,
-    //   gameSettings[id].correct_answer];
-
-    console.log(allAnswer);
-
     return (
       <div>
         <Header />
-        { gameSettings.length > 0 && (
-          <>
-            <div data-testid="question-category">
-              { gameSettings[id].category }
-            </div>
-            <div data-testid="question-text">
-              { gameSettings[id].question }
-            </div>
-            <div>
-
-
-
-              {/* <button type="button" data-testid="correct-answer">
-                { gameSettings[id].correct_answer }
-              </button>
-              { gameSettings[id].incorrect_answer.map((item, index) => {
-                key = { item };
-                <button
-                  data-testid={ `wrong-answer-${index}` }
-                >
-                  { gameSettings[id].incorrect_answer }
-                </button>
-              }) } */}
-
-            </div>
-          </>
-        ) }
-
         <button
           type="button"
-          onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
+          // onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
         >
           aperta aqui irmão
         </button>
@@ -101,3 +46,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
+
+Header.propTypes = {
+  gameSettings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setGamesSettings: PropTypes.func.isRequired,
+};
