@@ -28,9 +28,9 @@ class Game extends Component {
   }
 }
 
-Game.propTypes = {
-  token: PropTypes.string.isRequired,
-};
+// Game.propTypes = {
+//   token: PropTypes.string.isRequired,
+// };
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -42,6 +42,7 @@ function mapStateToProps(state) {
   return {
     token: state.token,
     gameSettings: state.gameSettings,
+    setGamesSettings: state.setGamesSettings,
   };
 }
 

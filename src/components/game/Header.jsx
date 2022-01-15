@@ -1,15 +1,13 @@
-import React, { Component } from "react";
-import md5 from "crypto-js/md5";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { getDefaultNormalizer } from "@testing-library/react";
-import { test } from "mocha";
+import React, { Component } from 'react';
+import md5 from 'crypto-js/md5';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   constructor() {
     super();
     this.state = {
-      img: "https//",
+      img: 'https//',
       loading: true,
     };
   }
@@ -26,6 +24,7 @@ class Header extends Component {
       this.setState({ img: img.url, loading: false });
     });
   };
+
   render() {
     const { name } = this.props;
     const { img, loading } = this.state;
@@ -53,6 +52,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(Header);
 
 Header.propTypes = {
-  email: PropTypes.string,
-  name: PropTypes.string,
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
