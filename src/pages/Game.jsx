@@ -2,55 +2,82 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/game/Header';
-import Quiz from '../components/game/Quiz';
-
-// import { getToken } from '../redux/actions/index';
-import getQuestion from '../services/getQuestion';
+import { getQuestion } from '../redux/actions';
 
 class Game extends Component {
   constructor() {
     super();
     this.state = {
-      gameSettings: [],
       id: 0,
+      allAnswer: [],
     };
-    console.log('constructor');
   }
 
   componentDidMount() {
-    const { token } = this.props;
-    const { setGamesSettings } = this;
-    setGamesSettings(token);
-    console.log('componentDidMount');
+    const localToken = JSON.parse(localStorage.getItem('token'));
+    const { setGamesSettings } = this.props;
+    setGamesSettings(localToken);
   }
 
-  setGamesSettings = (token) => {
-    getQuestion(token)
-      .then((data) => {
-        this.setState({
-          gameSettings: data,
-        });
+  // redirect para tela de login se []
+
+  getAllAnswer = () => {
+    const { gameSettings } = this.props;
+    const { id, allAnswer } = this.state;
+
+    if (gameSettings.length > 0) {
+      return this.setState({
+        allAnswer: '',
       });
+    }
   }
 
   render() {
-    console.log(this.state.gameSettings);
-    const { gameSettings, id } = this.state;
-    console.log(gameSettings[id]);
+    const { gameSettings } = this.props;
+    const { id, allAnswer } = this.state;
+
+    // const answers = [...gameSettings[id].incorrect_answers,
+    //   gameSettings[id].correct_answer];
+
+    console.log(allAnswer);
+
     return (
       <div>
-        <div>
-          <Header />
-          <div>
-            <p>{ gameSettings[id].category }</p>
-            <button
-              type="button"
-              onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
-            >
-              Next
-            </button>
-          </div>
-        </div>
+        <Header />
+        { gameSettings.length > 0 && (
+          <>
+            <div data-testid="question-category">
+              { gameSettings[id].category }
+            </div>
+            <div data-testid="question-text">
+              { gameSettings[id].question }
+            </div>
+            <div>
+
+
+
+              {/* <button type="button" data-testid="correct-answer">
+                { gameSettings[id].correct_answer }
+              </button>
+              { gameSettings[id].incorrect_answer.map((item, index) => {
+                key = { item };
+                <button
+                  data-testid={ `wrong-answer-${index}` }
+                >
+                  { gameSettings[id].incorrect_answer }
+                </button>
+              }) } */}
+
+            </div>
+          </>
+        ) }
+
+        <button
+          type="button"
+          onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
+        >
+          aperta aqui irmão
+        </button>
       </div>
     );
   }
@@ -60,10 +87,17 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
-function mapStateToProps(state) {
+function mapDispatchToProps(dispatch) {
   return {
-    token: state.token,
+    setGamesSettings: (token) => dispatch(getQuestion(token)),
   };
 }
 
-export default connect(mapStateToProps)(Game);
+function mapStateToProps(state) {
+  return {
+    token: state.token,
+    gameSettings: state.gameSettings,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
