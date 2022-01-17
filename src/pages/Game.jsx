@@ -8,10 +8,8 @@ import getApi from '../services/index';
 class Game extends Component {
   componentDidMount() {
     const localToken = JSON.parse(localStorage.getItem('token'));
-    // const localToken = 'f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6';
     const { setGamesSettings } = this.props;
     setGamesSettings(localToken);
-    const { gameSettings } = this.props;
   }
 
   resetToken = async () => {
@@ -41,7 +39,10 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-  responseCode: PropTypes.number.isRequired,
+  setGamesSettings: PropTypes.func.isRequired,
+  gameSettings: PropTypes.shape({
+    responseCode: PropTypes.number,
+  }).isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
