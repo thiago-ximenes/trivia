@@ -27,6 +27,7 @@ export function setGameSettings(payload) {
 }
 
 export function getQuestion(token) {
+  console.log(token)
   const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
   return (dispatch) => fetch(url)
     .then((response) => response.json())
