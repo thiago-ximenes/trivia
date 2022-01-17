@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/game/Header';
+import Quiz from '../components/game/Quiz';
 import { getQuestion } from '../redux/actions';
 import getApi from '../services/index';
 
@@ -27,23 +28,11 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        <button
-          type="button"
-          onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
-        >
-          aperta aqui irmão
-        </button>
+        <Quiz gameSettingsResults={ gameSettings.results } />
       </div>
     );
   }
 }
-
-Game.propTypes = {
-  setGamesSettings: PropTypes.func.isRequired,
-  gameSettings: PropTypes.shape({
-    responseCode: PropTypes.number,
-  }).isRequired,
-};
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -62,7 +51,8 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
-  // token: PropTypes.string.isRequired,
   setGamesSettings: PropTypes.func.isRequired,
-  // gameSettings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  gameSettings: PropTypes.shape({
+    responseCode: PropTypes.number,
+  }).isRequired,
 };
