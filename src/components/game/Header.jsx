@@ -20,7 +20,7 @@ class Header extends Component {
     const { gravatarEmail } = this.props;
 
     const hash = md5(gravatarEmail);
-    fetch(`https://www.gravatar.com/avatar/${hash}`).then((img) => {
+    fetch(`https://www.gravatar.com/avatar/${hash}`).then(() => {
       this.setState({ img: `https://www.gravatar.com/avatar/${hash}`, loading: false });
     });
   };
