@@ -30,5 +30,5 @@ export function getQuestion(token) {
   const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
   return (dispatch) => fetch(url)
     .then((response) => response.json())
-    .then((data) => dispatch(setGameSettings(data.results)));
+    .then((data) => dispatch(setGameSettings(data)));
 }

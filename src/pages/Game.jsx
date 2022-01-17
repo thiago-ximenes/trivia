@@ -3,19 +3,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/game/Header';
 import { getQuestion } from '../redux/actions';
+import { Redirect } from 'react-router-dom';
 
 class Game extends Component {
   componentDidMount() {
     const localToken = JSON.parse(localStorage.getItem('token'));
-    const { setGamesSettings } = this.props;
+    // const localToken = 'f00cb469ce38726ee00a7c6836761b0a4fb808181a125dcde6d50a9f3c9127b6';
+    const { setGamesSettings, gameSettings, history } = this.props;
     setGamesSettings(localToken);
   }
 
   // redirect para tela de login se []
 
   render() {
+    const { gameSettings } = this.props;
+    const THREE = 3;
     return (
       <div>
+        { gameSettings.responseCode === THREE && <Redirect to="/" /> }
         <Header />
         <button
           type="button"
