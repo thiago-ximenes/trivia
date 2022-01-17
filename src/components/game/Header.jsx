@@ -17,19 +17,20 @@ class Header extends Component {
   }
 
   getImage = () => {
-    const { email } = this.props;
+    const { gravatarEmail } = this.props;
 
-    const hash = md5(email).toString();
+    const hash = md5(gravatarEmail);
     fetch(`https://www.gravatar.com/avatar/${hash}`).then((img) => {
-      this.setState({ img: img.url, loading: false });
+      this.setState({ img: `https://www.gravatar.com/avatar/${hash}`, loading: false });
     });
   };
 
-  render() {
-    const { name } = this.props;
-    const { img, loading } = this.state;
-    return loading ? null : (
-      <header>
+  headerRender = () => {
+    const { name, gravatarEmail } = this.props;
+    const { img } = this.state;
+
+    return (
+      <div>
         <img
           data-testid="header-profile-picture"
           src={ img }
@@ -38,20 +39,26 @@ class Header extends Component {
           height="100px"
         />
         <h2 data-testid="header-player-name">{ name }</h2>
+        <p>{ gravatarEmail }</p>
         <p data-testid="header-score">0</p>
-      </header>
+      </div>
     );
+  }
+
+  render() {
+    const { loading } = this.state;
+    return loading ? null : this.headerRender();
   }
 }
 
 const mapStateToProps = (state) => ({
-  email: state.player.email,
+  gravatarEmail: state.player.gravatarEmail,
   name: state.player.name,
 });
 
 export default connect(mapStateToProps)(Header);
 
 Header.propTypes = {
-  email: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };

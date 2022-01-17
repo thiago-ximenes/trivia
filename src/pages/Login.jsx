@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SettingsButton from '../components/SettingsButton';
 import getApi from '../services';
-import { getToken } from '../redux/actions';
+import { getToken, setUserPlayer } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -22,9 +22,10 @@ class Login extends React.Component {
     const response = await getApi();
     const otherResponse = await response;
     const { token } = otherResponse;
-    const { getTokenByProps } = this.props;
+    const { getTokenByProps, getUserPlayer } = this.props;
     getTokenByProps(token);
     localStorage.setItem('token', JSON.stringify(token));
+    getUserPlayer(this.state);
     this.setState({ redirect: true });
   }
 
@@ -85,6 +86,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getTokenByProps: (token) => dispatch(getToken(token)),
+  getUserPlayer: (state) => dispatch(setUserPlayer(state)),
 });
 
 const mapStateToProps = (state) => ({
@@ -93,6 +95,7 @@ const mapStateToProps = (state) => ({
 
 Login.propTypes = {
   getTokenByProps: PropTypes.func.isRequired,
+  getUserPlayer: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

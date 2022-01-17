@@ -11,7 +11,10 @@ const INITIAL_STATE = [
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SET_USER_PLAYER:
-    return state;
+    return {
+      name: action.payload.name,
+      gravatarEmail: action.payload.email,
+    };
   default:
     return state;
   }
