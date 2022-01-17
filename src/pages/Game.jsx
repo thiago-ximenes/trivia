@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/game/Header';
 import { getQuestion } from '../redux/actions';
+import getApi from '../services/index';
 
 class Game extends Component {
   componentDidMount() {
@@ -11,9 +12,18 @@ class Game extends Component {
     setGamesSettings(localToken);
   }
 
-  // redirect para tela de login se []
+  resetToken = async () => {
+    const response = await getApi();
+    const { token } = response;
+    const { setGamesSettings } = this.props;
+    localStorage.setItem('token', JSON.stringify(token));
+    setGamesSettings(token);
+  }
 
   render() {
+    const { gameSettings } = this.props;
+    const THREE = 3;
+    if (gameSettings.responseCode === THREE) this.resetToken();
     return (
       <div>
         <Header />
@@ -27,6 +37,13 @@ class Game extends Component {
     );
   }
 }
+
+Game.propTypes = {
+  setGamesSettings: PropTypes.func.isRequired,
+  gameSettings: PropTypes.shape({
+    responseCode: PropTypes.number,
+  }).isRequired,
+};
 
 function mapDispatchToProps(dispatch) {
   return {
