@@ -19,7 +19,7 @@ class Game extends Component {
         <Header />
         <button
           type="button"
-          // onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
+          onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
         >
           aperta aqui irmão
         </button>
@@ -27,10 +27,6 @@ class Game extends Component {
     );
   }
 }
-
-// Game.propTypes = {
-//   token: PropTypes.string.isRequired,
-// };
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -48,7 +44,8 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
-Header.propTypes = {
-  gameSettings: PropTypes.arrayOf(PropTypes.object).isRequired,
+Game.propTypes = {
+  // token: PropTypes.string.isRequired,
   setGamesSettings: PropTypes.func.isRequired,
+  // gameSettings: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
