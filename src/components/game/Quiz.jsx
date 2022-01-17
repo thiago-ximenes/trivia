@@ -15,9 +15,9 @@ class Quiz extends Component {
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswer,
-    } = gameSettingsResults;
-    console.log(gameSettingsResults);
+    } = gameSettingsResults[id];
     const allAnswers = [...incorrectAnswer, correctAnswer];
+    const shuffle = allAnswers.sort(() => (Math.random(1) - Math.random()));
     return (
       <div>
         <p data-testid="question-category">
@@ -26,9 +26,18 @@ class Quiz extends Component {
         <p data-testid="question-text">
           { gameSettingsResults[id].question }
         </p>
-        <div>
-          { allAnswers }
-
+        <div data-testid="answer-options">
+          { shuffle.map((answer, index) => (
+            <button
+              key={ answer }
+              type="button"
+              data-testid={
+                correctAnswer === answer ? 'correct-answer' : `wrong-answer${index}`
+              }
+            >
+              { answer }
+            </button>
+          ))}
         </div>
       </div>
     );
@@ -36,7 +45,7 @@ class Quiz extends Component {
 
   render() {
     const { gameSettingsResults } = this.props;
-    const FIVE = 5;
+    // const FIVE = 5;
     const { QuizInform } = this;
     console.log();
     return (
@@ -55,3 +64,12 @@ class Quiz extends Component {
 }
 
 export default Quiz;
+
+Quiz.propTypes = {
+  gameSettingsResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  gameSettingsResults: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    correct_answer: PropTypes.string.isRequired,
+    incorrect_answer: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
+};

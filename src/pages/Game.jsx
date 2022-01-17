@@ -7,6 +7,11 @@ import { getQuestion } from '../redux/actions';
 import getApi from '../services/index';
 
 class Game extends Component {
+  // constructor(){
+  //   super();
+  //   this.state={ verify: false, }
+  // };
+
   componentDidMount() {
     const localToken = JSON.parse(localStorage.getItem('token'));
     const { setGamesSettings } = this.props;
@@ -25,10 +30,12 @@ class Game extends Component {
     const { gameSettings } = this.props;
     const THREE = 3;
     if (gameSettings.responseCode === THREE) this.resetToken();
+    // gameSettings.results.length > 0 && this.setState{ ( verify: true )};
     return (
       <div>
         <Header />
-        <Quiz gameSettingsResults={ gameSettings.results } />
+        { gameSettings.results
+        && <Quiz gameSettingsResults={ gameSettings.results } /> }
       </div>
     );
   }
@@ -54,5 +61,6 @@ Game.propTypes = {
   setGamesSettings: PropTypes.func.isRequired,
   gameSettings: PropTypes.shape({
     responseCode: PropTypes.number,
+    results: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 };
