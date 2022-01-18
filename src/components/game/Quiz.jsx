@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import './Quiz.css';
 
 class Quiz extends Component {
@@ -10,8 +10,42 @@ class Quiz extends Component {
       isChecked: false,
       isDisableAnswer: false,
       isDisableButton: true,
+      remainingTime: 30,
     };
   }
+
+  componentDidMount() {
+    this.startTimer();
+  }
+
+  componentDidUpdate(preProps, prevState) {
+    const { id } = this.state;
+    if (prevState.id !== id) {
+      this.resetTimer();
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  startTimer = () => {
+    const ONE_SECOND = 1000;
+    this.interval = setInterval(() => {
+      const { remainingTime } = this.state;
+      if (remainingTime > 0) {
+        this.setState((prevState) => ({
+          remainingTime: prevState.remainingTime - 1,
+        }));
+      } else {
+        this.disableGame();
+      }
+    }, ONE_SECOND);
+  }
+
+  resetTimer = () => {
+    this.setState({ remainingTime: 30 });
+  };
 
   QuizInform = () => {
     const { id, isChecked, isDisableAnswer } = this.state;
@@ -36,10 +70,10 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-                onClick={ () => this.setColorAnswers() }
+                onClick={ () => this.disableGame() }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
-                className={ isChecked && 'correct' }
+                className={ isChecked ? 'correct' : undefined }
               >
                 { answer }
               </button>
@@ -48,10 +82,10 @@ class Quiz extends Component {
                 <button
                   key={ answer }
                   type="button"
-                  onClick={ () => this.setColorAnswers() }
+                  onClick={ () => this.disableGame() }
                   disabled={ isDisableAnswer }
                   data-testid={ `wrong-answer${index}` }
-                  className={ isChecked && 'wrong' }
+                  className={ isChecked ? 'wrong' : undefined }
                 >
                   { answer }
                 </button>
@@ -62,7 +96,7 @@ class Quiz extends Component {
     );
   }
 
-  setColorAnswers = () => {
+  disableGame = () => {
     this.setState({
       isChecked: true,
       isDisableAnswer: true,
@@ -94,7 +128,7 @@ class Quiz extends Component {
 
   render() {
     const { gameSettingsResults } = this.props;
-    // const FIVE = 5;
+    const { remainingTime } = this.state;
     return (
       <>
         <div>
@@ -102,6 +136,7 @@ class Quiz extends Component {
         </div>
         <div>
           { this.getNextQuestion() }
+          <span>{ remainingTime }</span>
         </div>
       </>
     );
