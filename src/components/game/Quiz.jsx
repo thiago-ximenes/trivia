@@ -50,7 +50,7 @@ class Quiz extends Component {
                   type="button"
                   onClick={ this.setColorAnswers() }
                   disabled={ isDisableAnswer }
-                  data-testid={ `wrong-answer${ index }` }
+                  data-testid={ `wrong-answer${index}` }
                   className={ isChecked ? 'wrong' : 'grey' }
                 >
                   { answer }
