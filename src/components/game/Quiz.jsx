@@ -6,11 +6,14 @@ class Quiz extends Component {
     super();
     this.state = {
       id: 0,
+      isChecked: false,
+      isDisableAnswer: false,
+      isDisableButton: true,
     };
   }
 
   QuizInform = () => {
-    const { id } = this.state;
+    const { id, isChecked, isDisableAnswer } = this.state;
     const { gameSettingsResults } = this.props;
     const {
       correct_answer: correctAnswer,
@@ -28,26 +31,49 @@ class Quiz extends Component {
         </p>
         <div data-testid="answer-options">
           { shuffle.map((answer, index) => (
-            <button
-              key={ answer }
-              type="button"
-              data-testid={
-                correctAnswer === answer ? 'correct-answer' : `wrong-answer${index}`
-              }
-            >
-              { answer }
-            </button>
-          ))}
+            answer === correctAnswer ? (
+              <button
+                key={ answer }
+                type="button"
+                onClick={ this.setColorAnswers }
+                disabled={ isDisableAnswer }
+                data-testid="correct-answer"
+                className={ isChecked }
+              >
+                { answer }
+              </button>
+            )
+              : (
+                <button
+                  key={ answer }
+                  type="button"
+                  onClick={ this.setColorAnswers }
+                  disabled={ isDisableAnswer }
+                  data-testid={ `wrong-answer${index}` }
+                  className={ isChecked }
+                >
+                  { answer }
+                </button>
+              )
+          )) }
         </div>
       </div>
     );
+  }
+
+  setColorAnswers = () => {
+    this.setState = ({
+      isChecked: false,
+      isDisableAnswer: false,
+      isDisableButton: true,
+    });
   }
 
   render() {
     const { gameSettingsResults } = this.props;
     // const FIVE = 5;
     const { QuizInform } = this;
-    console.log();
+    const { isDisableButton } = this.state;
     return (
       <div>
         { gameSettingsResults && QuizInform() }
@@ -55,6 +81,7 @@ class Quiz extends Component {
           type="button"
           data-testid="btn-next"
           onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
+          disabled={ isDisableButton }
         >
           Próxima pergunta
         </button>
