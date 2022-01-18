@@ -66,7 +66,6 @@ class Quiz extends Component {
 export default Quiz;
 
 Quiz.propTypes = {
-  gameSettingsResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   gameSettingsResults: PropTypes.shape({
     category: PropTypes.string.isRequired,
     correct_answer: PropTypes.string.isRequired,
