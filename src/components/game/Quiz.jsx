@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './Quiz.css';
+import { setUserScore } from '../../redux/actions';
 
 class Quiz extends Component {
   constructor() {
@@ -11,6 +13,7 @@ class Quiz extends Component {
       isDisableAnswer: false,
       isDisableButton: true,
       remainingTime: 30,
+      score: 0,
     };
   }
 
@@ -70,7 +73,10 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-                onClick={ () => this.disableGame() }
+                onClick={ () => {
+                  this.disableGame();
+                  this.countScore();
+                } }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
                 className={ isChecked ? 'correct' : undefined }
@@ -104,6 +110,20 @@ class Quiz extends Component {
     });
   }
 
+  countScore = () => {
+    const { remainingTime, id } = this.state;
+    const { gameSettingsResults } = this.props;
+    const { difficulty } = gameSettingsResults[id];
+    const difficultyValues = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const TEN = 10;
+    const count = TEN + (remainingTime * difficultyValues[difficulty]);
+    this.setState((prevState) => ({ score: prevState.score + count }));
+  }
+
   getNextQuestion = () => {
     const { isDisableButton } = this.state;
     return (
@@ -128,7 +148,7 @@ class Quiz extends Component {
 
   render() {
     const { gameSettingsResults } = this.props;
-    const { remainingTime } = this.state;
+    const { remainingTime, score } = this.state;
     return (
       <>
         <div>
@@ -137,13 +157,18 @@ class Quiz extends Component {
         <div>
           { this.getNextQuestion() }
           <span>{ remainingTime }</span>
+          <p>{score}</p>
         </div>
       </>
     );
   }
 }
 
-export default Quiz;
+function mapDispatchToProps(dispatch) {
+  return {
+    setScore: (state) => dispatch(setUserScore(state)),
+  };
+}
 
 Quiz.propTypes = {
   gameSettingsResults: PropTypes.shape({
@@ -152,3 +177,5 @@ Quiz.propTypes = {
     incorrect_answer: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
+
+export default connect(null, mapDispatchToProps)(Quiz);
