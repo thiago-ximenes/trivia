@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './Quiz.css';
 
 class Quiz extends Component {
   constructor() {
@@ -35,10 +36,10 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-                onClick={ this.setColorAnswers }
+                onClick={ this.setColorAnswers() }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
-                className={ isChecked }
+                className={ isChecked ? 'correct' : 'grey' }
               >
                 { answer }
               </button>
@@ -47,10 +48,10 @@ class Quiz extends Component {
                 <button
                   key={ answer }
                   type="button"
-                  onClick={ this.setColorAnswers }
+                  onClick={ this.setColorAnswers() }
                   disabled={ isDisableAnswer }
-                  data-testid={ `wrong-answer${index}` }
-                  className={ isChecked }
+                  data-testid={ `wrong-answer${ index }` }
+                  className={ isChecked ? 'wrong' : 'grey' }
                 >
                   { answer }
                 </button>
@@ -63,20 +64,16 @@ class Quiz extends Component {
 
   setColorAnswers = () => {
     this.setState = ({
-      isChecked: false,
-      isDisableAnswer: false,
-      isDisableButton: true,
+      isChecked: true,
+      isDisableAnswer: true,
+      isDisableButton: false,
     });
   }
 
-  render() {
-    const { gameSettingsResults } = this.props;
-    // const FIVE = 5;
-    const { QuizInform } = this;
+  getNextQuestion = () => {
     const { isDisableButton } = this.state;
     return (
       <div>
-        { gameSettingsResults && QuizInform() }
         <button
           type="button"
           data-testid="btn-next"
@@ -86,6 +83,21 @@ class Quiz extends Component {
           Próxima pergunta
         </button>
       </div>
+    );
+  };
+
+  render() {
+    const { gameSettingsResults } = this.props;
+    // const FIVE = 5;
+    return (
+      <>
+        <div>
+          { gameSettingsResults && this.QuizInform() }
+        </div>
+        <div>
+          { this.getNextQuestion() }
+        </div>
+      </>
     );
   }
 }
