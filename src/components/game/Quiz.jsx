@@ -36,10 +36,10 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-                onClick={ this.setColorAnswers() }
+                onClick={ () => this.setColorAnswers() }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
-                className={ isChecked ? 'correct' : 'grey' }
+                className={ isChecked && 'correct' }
               >
                 { answer }
               </button>
@@ -48,10 +48,10 @@ class Quiz extends Component {
                 <button
                   key={ answer }
                   type="button"
-                  onClick={ this.setColorAnswers() }
+                  onClick={ () => this.setColorAnswers() }
                   disabled={ isDisableAnswer }
                   data-testid={ `wrong-answer${index}` }
-                  className={ isChecked ? 'wrong' : 'grey' }
+                  className={ isChecked && 'wrong' }
                 >
                   { answer }
                 </button>
@@ -63,7 +63,7 @@ class Quiz extends Component {
   }
 
   setColorAnswers = () => {
-    this.setState = ({
+    this.setState({
       isChecked: true,
       isDisableAnswer: true,
       isDisableButton: false,
@@ -77,7 +77,12 @@ class Quiz extends Component {
         <button
           type="button"
           data-testid="btn-next"
-          onClick={ () => this.setState((prevState) => ({ id: prevState.id + 1 })) }
+          onClick={ () => this.setState((prevState) => ({
+            id: prevState.id + 1,
+            isChecked: false,
+            isDisableAnswer: false,
+            isDisableButton: true,
+          })) }
           disabled={ isDisableButton }
         >
           Próxima pergunta
