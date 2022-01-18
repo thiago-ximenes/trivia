@@ -14,6 +14,7 @@ class Quiz extends Component {
       isDisableAnswer: false,
       isDisableButton: true,
       redirect: false,
+      count: 0,
     };
   }
 
@@ -40,7 +41,7 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-                onClick={ () => this.setColorAnswers() }
+                onClick={ () => this.onCorrectClick() }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
                 className={ isChecked && 'correct' }
@@ -72,6 +73,18 @@ class Quiz extends Component {
       isDisableAnswer: true,
       isDisableButton: false,
     });
+  }
+
+  setCount = () => {
+    const { count } = this.state;
+    this.setState({
+      count: count + 1,
+    });
+  }
+
+  onCorrectClick = () => {
+    this.setColorAnswers();
+    this.setCount();
   }
 
   feedbackRedirect = () => {
