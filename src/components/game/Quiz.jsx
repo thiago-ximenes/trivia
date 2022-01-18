@@ -84,6 +84,7 @@ class Quiz extends Component {
             isDisableButton: true,
           })) }
           disabled={ isDisableButton }
+          className={ isDisableButton && 'btn-off' }
         >
           Próxima pergunta
         </button>
