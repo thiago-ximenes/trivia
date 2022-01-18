@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './Quiz.css';
+import { Redirect } from 'react-router-dom';
+
+const four = 4;
 
 class Quiz extends Component {
   constructor() {
@@ -10,6 +13,7 @@ class Quiz extends Component {
       isChecked: false,
       isDisableAnswer: false,
       isDisableButton: true,
+      redirect: false,
     };
   }
 
@@ -70,23 +74,33 @@ class Quiz extends Component {
     });
   }
 
+  feedbackRedirect = () => {
+    const { id } = this.state;
+    if (id < four) {
+      this.setState((prevState) => ({
+        id: prevState.id + 1,
+        isChecked: false,
+        isDisableAnswer: false,
+        isDisableButton: true,
+      }));
+    } else {
+      this.setState({ redirect: true });
+    }
+  }
+
   getNextQuestion = () => {
-    const { isDisableButton } = this.state;
+    const { isDisableButton, redirect } = this.state;
     return (
       <div>
         <button
           type="button"
           data-testid="btn-next"
-          onClick={ () => this.setState((prevState) => ({
-            id: prevState.id + 1,
-            isChecked: false,
-            isDisableAnswer: false,
-            isDisableButton: true,
-          })) }
+          onClick={ () => this.feedbackRedirect() }
           disabled={ isDisableButton }
         >
           Próxima pergunta
         </button>
+        { redirect && <Redirect to="/feedback" /> }
       </div>
     );
   };
