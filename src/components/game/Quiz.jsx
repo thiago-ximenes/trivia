@@ -38,7 +38,7 @@ class Quiz extends Component {
           remainingTime: prevState.remainingTime - 1,
         }));
       } else {
-        this.setTimerOut(true);
+        this.disableGame();
       }
     }, ONE_SECOND);
   }
@@ -70,7 +70,7 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-                onClick={ () => this.setColorAnswers() }
+                onClick={ () => this.disableGame() }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
                 className={ isChecked ? 'correct' : undefined }
@@ -82,7 +82,7 @@ class Quiz extends Component {
                 <button
                   key={ answer }
                   type="button"
-                  onClick={ () => this.setColorAnswers() }
+                  onClick={ () => this.disableGame() }
                   disabled={ isDisableAnswer }
                   data-testid={ `wrong-answer${index}` }
                   className={ isChecked ? 'wrong' : undefined }
@@ -96,7 +96,7 @@ class Quiz extends Component {
     );
   }
 
-  setColorAnswers = () => {
+  disableGame = () => {
     this.setState({
       isChecked: true,
       isDisableAnswer: true,
@@ -124,17 +124,6 @@ class Quiz extends Component {
       </div>
     );
   };
-
-  setTimerOut = (timer = false) => {
-    console.log(timer);
-    if (timer) {
-      this.setState({
-        isDisableAnswer: true,
-        isDisableButton: false,
-        isChecked: true,
-      });
-    }
-  }
 
   render() {
     const { gameSettingsResults } = this.props;
