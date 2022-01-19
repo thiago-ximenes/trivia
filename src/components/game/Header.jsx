@@ -26,7 +26,7 @@ class Header extends Component {
   };
 
   headerRender = () => {
-    const { name, gravatarEmail, score } = this.props;
+    const { name, gravatarEmail } = this.props;
     const { img } = this.state;
 
     return (
@@ -40,7 +40,7 @@ class Header extends Component {
         />
         <h2 data-testid="header-player-name">{ name }</h2>
         <p>{ gravatarEmail }</p>
-        <p data-testid="header-score">{ score }</p>
+        <p data-testid="header-score">0</p>
       </div>
     );
   }
