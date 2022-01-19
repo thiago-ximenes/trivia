@@ -26,15 +26,9 @@ class Quiz extends Component {
   componentDidUpdate(preProps, prevState) {
     const { id, score } = this.state;
     if (prevState.score !== score) {
-      const { setScore, playerData } = this.props;
+      const { setScore } = this.props;
       setScore(score);
-      playerData.score = score;
-      // if (localStorage.getItem('ranking')) {
-    //   const ranking = JSON.parse(localStorage.getItem('ranking'));
-    // }
     }
-    // const scoreToLocalStore = localStorage.setItem('ranking', JSON.stringify(score));
-    // localStorage.setItem('score', score);
     if (prevState.id !== id) {
       this.resetTimer();
       this.randomQuestion();
@@ -75,13 +69,26 @@ class Quiz extends Component {
     this.setState({ shuffledQuestions: shuffle });
   };
 
+  setLocalStorage = (score) => {
+    console.log('chamou');
+    const { playerData } = this.props;
+    playerData.score = score;
+    if (localStorage.getItem('ranking')) {
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      ranking.push(playerData);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    } else {
+      const ranking = [];
+      ranking.push(playerData);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
+  };
+
   QuizInform = () => {
     const { id, isChecked, isDisableAnswer, shuffledQuestions } = this.state;
-    console.log(shuffledQuestions);
     const { gameSettingsResults } = this.props;
     const {
       correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswer,
     } = gameSettingsResults[id];
     // const allAnswers = [...incorrectAnswer, correctAnswer];
     // const shuffle = allAnswers.sort(() => (Math.random(1) - Math.random()));
@@ -105,8 +112,7 @@ class Quiz extends Component {
                 } }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
-                // className={ isChecked ? 'correct' : undefined }
-                className="correct"
+                className={ isChecked ? 'correct' : undefined }
               >
                 { answer }
               </button>
@@ -153,17 +159,22 @@ class Quiz extends Component {
 
   getNextQuestion = () => {
     const { isDisableButton } = this.state;
+    const { score, id } = this.state;
+    const FOUR = 4;
     return (
       <div>
         <button
           type="button"
           data-testid="btn-next"
-          onClick={ () => this.setState((prevState) => ({
-            id: prevState.id + 1,
-            isChecked: false,
-            isDisableAnswer: false,
-            isDisableButton: true,
-          })) }
+          onClick={ () => {
+            this.setState((prevState) => ({
+              id: prevState.id + 1,
+              isChecked: false,
+              isDisableAnswer: false,
+              isDisableButton: true,
+            }));
+            return (id >= FOUR && this.setLocalStorage(score));
+          } }
           disabled={ isDisableButton }
           className={ isDisableButton && 'btn-off' }
         >
@@ -210,6 +221,9 @@ Quiz.propTypes = {
     incorrect_answer: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   setScore: PropTypes.func.isRequired,
+  playerData: PropTypes.shape({
+    score: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
