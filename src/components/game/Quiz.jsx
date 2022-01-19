@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './Quiz.css';
 import { setUserScore } from '../../redux/actions';
+import './Quiz.css';
 
 class Quiz extends Component {
   constructor() {
@@ -14,17 +14,30 @@ class Quiz extends Component {
       isDisableButton: true,
       remainingTime: 30,
       score: 0,
+      shuffledQuestions: [],
     };
   }
 
   componentDidMount() {
     this.startTimer();
+    this.randomQuestion();
   }
 
   componentDidUpdate(preProps, prevState) {
-    const { id } = this.state;
+    const { id, score } = this.state;
+    if (prevState.score !== score) {
+      const { setScore, playerData } = this.props;
+      setScore(score);
+      playerData.score = score;
+      // if (localStorage.getItem('ranking')) {
+    //   const ranking = JSON.parse(localStorage.getItem('ranking'));
+    // }
+    }
+    // const scoreToLocalStore = localStorage.setItem('ranking', JSON.stringify(score));
+    // localStorage.setItem('score', score);
     if (prevState.id !== id) {
       this.resetTimer();
+      this.randomQuestion();
     }
   }
 
@@ -50,8 +63,8 @@ class Quiz extends Component {
     this.setState({ remainingTime: 30 });
   };
 
-  QuizInform = () => {
-    const { id, isChecked, isDisableAnswer } = this.state;
+  randomQuestion = () => {
+    const { id } = this.state;
     const { gameSettingsResults } = this.props;
     const {
       correct_answer: correctAnswer,
@@ -59,6 +72,19 @@ class Quiz extends Component {
     } = gameSettingsResults[id];
     const allAnswers = [...incorrectAnswer, correctAnswer];
     const shuffle = allAnswers.sort(() => (Math.random(1) - Math.random()));
+    this.setState({ shuffledQuestions: shuffle });
+  };
+
+  QuizInform = () => {
+    const { id, isChecked, isDisableAnswer, shuffledQuestions } = this.state;
+    console.log(shuffledQuestions);
+    const { gameSettingsResults } = this.props;
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswer,
+    } = gameSettingsResults[id];
+    // const allAnswers = [...incorrectAnswer, correctAnswer];
+    // const shuffle = allAnswers.sort(() => (Math.random(1) - Math.random()));
     return (
       <div>
         <p data-testid="question-category">
@@ -68,7 +94,7 @@ class Quiz extends Component {
           { gameSettingsResults[id].question }
         </p>
         <div data-testid="answer-options">
-          { shuffle.map((answer, index) => (
+          { shuffledQuestions.map((answer, index) => (
             answer === correctAnswer ? (
               <button
                 key={ answer }
@@ -79,7 +105,8 @@ class Quiz extends Component {
                 } }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
-                className={ isChecked ? 'correct' : undefined }
+                // className={ isChecked ? 'correct' : undefined }
+                className="correct"
               >
                 { answer }
               </button>
@@ -164,6 +191,12 @@ class Quiz extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    playerData: state.player,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     setScore: (state) => dispatch(setUserScore(state)),
@@ -176,6 +209,7 @@ Quiz.propTypes = {
     correct_answer: PropTypes.string.isRequired,
     incorrect_answer: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  setScore: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Quiz);
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
