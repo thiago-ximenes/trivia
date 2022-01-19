@@ -1,5 +1,4 @@
-const setLocalStorage = (score) => {
-  const { playerData } = this.props;
+const setLocalStorage = (score, playerData) => {
   playerData.score = score;
   if (localStorage.getItem('ranking')) {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
