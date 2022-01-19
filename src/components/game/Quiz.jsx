@@ -157,7 +157,6 @@ class Quiz extends Component {
     this.disableGame();
     this.setCount();
     this.countScore();
-
   }
 
   feedbackRedirect = () => {
