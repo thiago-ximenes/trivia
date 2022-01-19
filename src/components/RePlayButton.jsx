@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-class RePlay extends Component {
+class RePlayButton extends Component {
   constructor() {
     super();
     this.state = {
@@ -28,4 +28,4 @@ class RePlay extends Component {
   }
 }
 
-export default RePlay;
+export default RePlayButton;
