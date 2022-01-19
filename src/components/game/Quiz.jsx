@@ -78,7 +78,6 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-
                 onClick={ () => this.onCorrectClick() }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
@@ -122,7 +121,7 @@ class Quiz extends Component {
   }
 
   onCorrectClick = () => {
-    this.disableGame()
+    this.disableGame();
     this.setCount();
   }
 
