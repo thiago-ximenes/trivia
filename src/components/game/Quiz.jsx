@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { setCount, setUserScore } from '../../redux/actions';
+import setLocalStorage from '../../services/setLocalStorage';
 import './Quiz.css';
 
 const four = 4;
@@ -72,21 +73,6 @@ class Quiz extends Component {
     const allAnswers = [...incorrectAnswer, correctAnswer];
     const shuffle = allAnswers.sort(() => (Math.random(1) - Math.random()));
     this.setState({ shuffledQuestions: shuffle });
-  };
-
-  setLocalStorage = (score) => {
-    console.log('chamou');
-    const { playerData } = this.props;
-    playerData.score = score;
-    if (localStorage.getItem('ranking')) {
-      const ranking = JSON.parse(localStorage.getItem('ranking'));
-      ranking.push(playerData);
-      localStorage.setItem('ranking', JSON.stringify(ranking));
-    } else {
-      const ranking = [];
-      ranking.push(playerData);
-      localStorage.setItem('ranking', JSON.stringify(ranking));
-    }
   };
 
   QuizInform = () => {
@@ -197,7 +183,7 @@ class Quiz extends Component {
           data-testid="btn-next"
           onClick={ () => {
             this.feedbackRedirect();
-            return (id >= four && this.setLocalStorage(score));
+            return (id >= four && setLocalStorage(score));
           } }
           disabled={ isDisableButton }
           className={ isDisableButton && 'btn-off' }
