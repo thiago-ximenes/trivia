@@ -18,7 +18,6 @@ class Quiz extends Component {
       redirect: false,
       count: 0,
       remainingTime: 30,
-
     };
   }
 
@@ -123,6 +122,7 @@ class Quiz extends Component {
   onCorrectClick = () => {
     this.disableGame();
     this.setCount();
+    // apagar
   }
 
   feedbackRedirect = () => {
