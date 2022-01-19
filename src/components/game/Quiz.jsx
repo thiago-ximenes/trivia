@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './Quiz.css';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setCount } from '../../redux/actions';
 
 const four = 4;
 
@@ -77,9 +79,10 @@ class Quiz extends Component {
 
   setCount = () => {
     const { count } = this.state;
+    const { countCorrectAnswers } = this.props;
     this.setState({
       count: count + 1,
-    });
+    }, () => countCorrectAnswers(this.state));
   }
 
   onCorrectClick = () => {
@@ -134,7 +137,11 @@ class Quiz extends Component {
   }
 }
 
-export default Quiz;
+const mapDispatchToProps = (dispatch) => ({
+  countCorrectAnswers: (state) => dispatch(setCount(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Quiz);
 
 Quiz.propTypes = {
   gameSettingsResults: PropTypes.shape({
@@ -142,4 +149,5 @@ Quiz.propTypes = {
     correct_answer: PropTypes.string.isRequired,
     incorrect_answer: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  countCorrectAnswers: PropTypes.func.isRequired,
 };

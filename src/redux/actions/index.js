@@ -3,6 +3,7 @@ import { SET_GAME_SETTINGS } from '../reducers/gameSettings';
 export const SET_USER_PLAYER = 'SET_USER_PLAYER';
 export const GET_TOKEN = 'GET_TOKEN';
 export const SET_USER_RANKING_POSITION = 'SET_USER_RANKING_POSITION';
+export const SET_COUNT = 'SET_COUNT';
 
 export const setUserPlayer = (payload) => ({
   type: SET_USER_PLAYER,
@@ -25,6 +26,11 @@ export function setGameSettings(payload) {
     payload,
   };
 }
+
+export const setCount = (value) => ({
+  type: SET_COUNT,
+  value,
+});
 
 export function getQuestion(token) {
   const url = `https://opentdb.com/api.php?amount=5&token=${token}`;

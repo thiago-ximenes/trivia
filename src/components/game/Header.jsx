@@ -26,7 +26,8 @@ class Header extends Component {
   };
 
   headerRender = () => {
-    const { name, gravatarEmail } = this.props;
+    const { name, gravatarEmail, countCorrectAnswers } = this.props;
+    console.log(countCorrectAnswers);
     const { img } = this.state;
 
     return (
@@ -40,7 +41,7 @@ class Header extends Component {
         />
         <h2 data-testid="header-player-name">{ name }</h2>
         <p>{ gravatarEmail }</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{ countCorrectAnswers }</p>
       </div>
     );
   }
@@ -54,6 +55,7 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   gravatarEmail: state.player.gravatarEmail,
   name: state.player.name,
+  countCorrectAnswers: state.correctAnswersCount,
 });
 
 export default connect(mapStateToProps)(Header);
@@ -61,4 +63,5 @@ export default connect(mapStateToProps)(Header);
 Header.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  countCorrectAnswers: PropTypes.number.isRequired,
 };
