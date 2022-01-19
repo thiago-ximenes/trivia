@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import RankingButton from '../components/game/RankingButton';
 import RePlayButton from '../components/RePlayButton';
 import Header from '../components/game/Header';
 
 const average = 3;
 
 class Feedback extends Component {
-  // precisamos pegar do localStorage o numero de acertos
   feedbackMessage = () => {
     const { result } = this.props;
     console.log(result);
@@ -29,6 +29,7 @@ class Feedback extends Component {
         <div data-testid="feedback-text">
           { this.feedbackMessage() }
         </div>
+        <RankingButton />
         <RePlayButton />
       </div>
     );
