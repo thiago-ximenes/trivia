@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import './Quiz.css';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setCount } from '../../redux/actions';
+
+const four = 4;
 
 class Quiz extends Component {
   constructor() {
@@ -10,7 +15,10 @@ class Quiz extends Component {
       isChecked: false,
       isDisableAnswer: false,
       isDisableButton: true,
+      redirect: false,
+      count: 0,
       remainingTime: 30,
+
     };
   }
 
@@ -70,7 +78,7 @@ class Quiz extends Component {
               <button
                 key={ answer }
                 type="button"
-                onClick={ () => this.disableGame() }
+                onClick={ () => this.onCorrectClick() }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
                 className={ isChecked ? 'correct' : undefined }
@@ -104,24 +112,47 @@ class Quiz extends Component {
     });
   }
 
+  setCount = () => {
+    const { count } = this.state;
+    const { countCorrectAnswers } = this.props;
+    this.setState({
+      count: count + 1,
+    }, () => countCorrectAnswers(this.state));
+  }
+
+  onCorrectClick = () => {
+    this.disableGame();
+    this.setCount();
+  }
+
+  feedbackRedirect = () => {
+    const { id } = this.state;
+    if (id < four) {
+      this.setState((prevState) => ({
+        id: prevState.id + 1,
+        isChecked: false,
+        isDisableAnswer: false,
+        isDisableButton: true,
+      }));
+    } else {
+      this.setState({ redirect: true });
+    }
+  }
+
   getNextQuestion = () => {
-    const { isDisableButton } = this.state;
+    const { isDisableButton, redirect } = this.state;
     return (
       <div>
         <button
           type="button"
           data-testid="btn-next"
-          onClick={ () => this.setState((prevState) => ({
-            id: prevState.id + 1,
-            isChecked: false,
-            isDisableAnswer: false,
-            isDisableButton: true,
-          })) }
+          onClick={ () => this.feedbackRedirect() }
           disabled={ isDisableButton }
           className={ isDisableButton && 'btn-off' }
         >
           Próxima pergunta
         </button>
+        { redirect && <Redirect to="/feedback" /> }
       </div>
     );
   };
@@ -143,7 +174,11 @@ class Quiz extends Component {
   }
 }
 
-export default Quiz;
+const mapDispatchToProps = (dispatch) => ({
+  countCorrectAnswers: (state) => dispatch(setCount(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Quiz);
 
 Quiz.propTypes = {
   gameSettingsResults: PropTypes.shape({
@@ -151,4 +186,5 @@ Quiz.propTypes = {
     correct_answer: PropTypes.string.isRequired,
     incorrect_answer: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  countCorrectAnswers: PropTypes.func.isRequired,
 };
