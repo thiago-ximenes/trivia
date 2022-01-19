@@ -122,7 +122,6 @@ class Quiz extends Component {
   onCorrectClick = () => {
     this.disableGame();
     this.setCount();
-    // apagar
   }
 
   feedbackRedirect = () => {
