@@ -1,5 +1,4 @@
-setLocalStorage = (score) => {
-  console.log('chamou');
+const setLocalStorage = (score) => {
   const { playerData } = this.props;
   playerData.score = score;
   if (localStorage.getItem('ranking')) {
@@ -12,3 +11,5 @@ setLocalStorage = (score) => {
     localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 };
+
+export default setLocalStorage;
