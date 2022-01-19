@@ -9,3 +9,7 @@
 .grey {
   color: grey;
 }
+
+.btn-off {
+  display: none;
+}
