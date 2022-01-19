@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import RankingButton from '../components/game/RankingButton';
+import RePlayButton from '../components/RePlayButton';
+import Header from '../components/game/Header';
 
 const average = 3;
 
@@ -23,10 +25,12 @@ class Feedback extends Component {
   render() {
     return (
       <div>
+        <Header />
         <div data-testid="feedback-text">
           { this.feedbackMessage() }
         </div>
         <RankingButton />
+        <RePlayButton />
       </div>
     );
   }
