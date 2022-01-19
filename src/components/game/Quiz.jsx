@@ -147,10 +147,10 @@ class Quiz extends Component {
 
   setCount = () => {
     const { count } = this.state;
-    const { countCorrectAnswers } = this.props;
+    const { assertions } = this.props;
     this.setState({
       count: count + 1,
-    }, () => countCorrectAnswers(this.state));
+    }, () => assertions(this.state));
   }
 
   onCorrectClick = () => {
@@ -222,7 +222,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setScore: (state) => dispatch(setUserScore(state)),
-    countCorrectAnswers: (state) => dispatch(setCount(state)),
+    assertions: (state) => dispatch(setCount(state)),
   };
 }
 
@@ -236,7 +236,7 @@ Quiz.propTypes = {
   playerData: PropTypes.shape({
     score: PropTypes.number.isRequired,
   }).isRequired,
-  countCorrectAnswers: PropTypes.func.isRequired,
+  assertions: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
