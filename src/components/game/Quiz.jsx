@@ -3,6 +3,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setUserScore } from '../../redux/actions';
 import './Quiz.css';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setCount } from '../../redux/actions';
+
+const four = 4;
 
 class Quiz extends Component {
   constructor() {
@@ -12,6 +17,8 @@ class Quiz extends Component {
       isChecked: false,
       isDisableAnswer: false,
       isDisableButton: true,
+      redirect: false,
+      count: 0,
       remainingTime: 30,
       score: 0,
       shuffledQuestions: [],
@@ -109,6 +116,7 @@ class Quiz extends Component {
                 onClick={ () => {
                   this.disableGame();
                   this.countScore();
+                  this.onCorrectClick()
                 } }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
@@ -161,25 +169,52 @@ class Quiz extends Component {
     const { isDisableButton } = this.state;
     const { score, id } = this.state;
     const FOUR = 4;
+    
+  setCount = () => {
+    const { count } = this.state;
+    const { countCorrectAnswers } = this.props;
+    this.setState({
+      count: count + 1,
+    }, () => countCorrectAnswers(this.state));
+  }
+
+  onCorrectClick = () => {
+    this.disableGame();
+    this.setCount();
+  }
+
+  feedbackRedirect = () => {
+    const { id } = this.state;
+    if (id < four) {
+      this.setState((prevState) => ({
+        id: prevState.id + 1,
+        isChecked: false,
+        isDisableAnswer: false,
+        isDisableButton: true,
+      }));
+    } else {
+      this.setState({ redirect: true });
+    }
+  }
+
+  getNextQuestion = () => {
+    const { isDisableButton, redirect } = this.state;
     return (
       <div>
         <button
           type="button"
           data-testid="btn-next"
           onClick={ () => {
-            this.setState((prevState) => ({
-              id: prevState.id + 1,
-              isChecked: false,
-              isDisableAnswer: false,
-              isDisableButton: true,
-            }));
+            this.feedbackRedirect()
             return (id >= FOUR && this.setLocalStorage(score));
           } }
+          onClick={ () => this.feedbackRedirect() }
           disabled={ isDisableButton }
           className={ isDisableButton && 'btn-off' }
         >
           Próxima pergunta
         </button>
+        { redirect && <Redirect to="/feedback" /> }
       </div>
     );
   };
@@ -202,6 +237,7 @@ class Quiz extends Component {
   }
 }
 
+
 function mapStateToProps(state) {
   return {
     playerData: state.player,
@@ -211,6 +247,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setScore: (state) => dispatch(setUserScore(state)),
+    countCorrectAnswers: (state) => dispatch(setCount(state)),
   };
 }
 
@@ -224,6 +261,7 @@ Quiz.propTypes = {
   playerData: PropTypes.shape({
     score: PropTypes.number.isRequired,
   }).isRequired,
+  countCorrectAnswers: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);

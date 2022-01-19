@@ -10,6 +10,8 @@ export const setUserScore = (payload) => ({
   payload,
 });
 
+export const SET_COUNT = 'SET_COUNT';
+
 export const setUserPlayer = (payload) => ({
   type: SET_USER_PLAYER,
   payload,
@@ -31,6 +33,11 @@ export function setGameSettings(payload) {
     payload,
   };
 }
+
+export const setCount = (value) => ({
+  type: SET_COUNT,
+  value,
+});
 
 export function getQuestion(token) {
   const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
