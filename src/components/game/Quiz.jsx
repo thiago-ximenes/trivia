@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setUserScore } from '../../redux/actions';
-import './Quiz.css';
 import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { setCount } from '../../redux/actions';
+import { setCount, setUserScore } from '../../redux/actions';
+import './Quiz.css';
 
 const four = 4;
 
@@ -97,8 +95,6 @@ class Quiz extends Component {
     const {
       correct_answer: correctAnswer,
     } = gameSettingsResults[id];
-    // const allAnswers = [...incorrectAnswer, correctAnswer];
-    // const shuffle = allAnswers.sort(() => (Math.random(1) - Math.random()));
     return (
       <div>
         <p data-testid="question-category">
@@ -116,7 +112,7 @@ class Quiz extends Component {
                 onClick={ () => {
                   this.disableGame();
                   this.countScore();
-                  this.onCorrectClick()
+                  this.onCorrectClick();
                 } }
                 disabled={ isDisableAnswer }
                 data-testid="correct-answer"
@@ -165,11 +161,6 @@ class Quiz extends Component {
     this.setState((prevState) => ({ score: prevState.score + count }));
   }
 
-  getNextQuestion = () => {
-    const { isDisableButton } = this.state;
-    const { score, id } = this.state;
-    const FOUR = 4;
-    
   setCount = () => {
     const { count } = this.state;
     const { countCorrectAnswers } = this.props;
@@ -198,17 +189,16 @@ class Quiz extends Component {
   }
 
   getNextQuestion = () => {
-    const { isDisableButton, redirect } = this.state;
+    const { isDisableButton, redirect, id, score } = this.state;
     return (
       <div>
         <button
           type="button"
           data-testid="btn-next"
           onClick={ () => {
-            this.feedbackRedirect()
-            return (id >= FOUR && this.setLocalStorage(score));
+            this.feedbackRedirect();
+            return (id >= four && this.setLocalStorage(score));
           } }
-          onClick={ () => this.feedbackRedirect() }
           disabled={ isDisableButton }
           className={ isDisableButton && 'btn-off' }
         >
@@ -236,7 +226,6 @@ class Quiz extends Component {
     );
   }
 }
-
 
 function mapStateToProps(state) {
   return {
