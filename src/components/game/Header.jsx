@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Header extends Component {
   constructor() {
@@ -27,7 +27,6 @@ class Header extends Component {
 
   headerRender = () => {
     const { name, gravatarEmail, countCorrectAnswers } = this.props;
-    console.log(countCorrectAnswers);
     const { img } = this.state;
 
     return (
@@ -56,6 +55,7 @@ const mapStateToProps = (state) => ({
   gravatarEmail: state.player.gravatarEmail,
   name: state.player.name,
   countCorrectAnswers: state.correctAnswersCount,
+
 });
 
 export default connect(mapStateToProps)(Header);
