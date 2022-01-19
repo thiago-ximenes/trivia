@@ -175,6 +175,7 @@ class Quiz extends Component {
 
   getNextQuestion = () => {
     const { isDisableButton, redirect, id, score } = this.state;
+    const { playerData } = this.props;
     return (
       <div>
         <button
@@ -182,7 +183,7 @@ class Quiz extends Component {
           data-testid="btn-next"
           onClick={ () => {
             this.feedbackRedirect();
-            return (id >= four && setLocalStorage(score));
+            return (id >= four && setLocalStorage(score, playerData));
           } }
           disabled={ isDisableButton }
           className={ isDisableButton && 'btn-off' }
