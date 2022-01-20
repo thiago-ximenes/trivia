@@ -1,10 +1,11 @@
-import { SET_USER_PLAYER, SET_USER_SCORE, SET_COUNT } from '../actions';
+import { SET_USER_PLAYER, SET_USER_SCORE, SET_COUNT, SET_USER_IMG } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   assertions: 0,
   score: 0,
   gravatarEmail: '',
+  img: '',
 };
 
 const player = (state = INITIAL_STATE, action) => {
@@ -24,6 +25,11 @@ const player = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       assertions: action.value.count,
+    };
+  case SET_USER_IMG:
+    return {
+      ...state,
+      img: action.payload.img,
     };
   default:
     return state;

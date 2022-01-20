@@ -4,6 +4,12 @@ export const SET_USER_PLAYER = 'SET_USER_PLAYER';
 export const GET_TOKEN = 'GET_TOKEN';
 export const SET_USER_RANKING_POSITION = 'SET_USER_RANKING_POSITION';
 export const SET_USER_SCORE = 'SET_USER_SCORE';
+export const SET_USER_IMG = 'SET_USER_IMG';
+
+export const setUserImg = (payload) => ({
+  type: SET_USER_IMG,
+  payload,
+});
 
 export const setUserScore = (payload) => ({
   type: SET_USER_SCORE,
