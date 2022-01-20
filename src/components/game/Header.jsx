@@ -2,6 +2,7 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { setUserImg } from '../../redux/actions';
 
 class Header extends Component {
   constructor() {
@@ -28,7 +29,6 @@ class Header extends Component {
   headerRender = () => {
     const { name, gravatarEmail, assertion } = this.props;
     const { img } = this.state;
-
     return (
       <div>
         <img
@@ -46,6 +46,8 @@ class Header extends Component {
   }
 
   render() {
+    const { setImg } = this.props;
+    setImg(this.state);
     const { loading } = this.state;
     return loading ? null : this.headerRender();
   }
@@ -55,13 +57,17 @@ const mapStateToProps = (state) => ({
   gravatarEmail: state.player.gravatarEmail,
   name: state.player.name,
   assertion: state.player.assertions,
-
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  setImg: (state) => dispatch(setUserImg(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 Header.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   assertion: PropTypes.number.isRequired,
+  setImg: PropTypes.func.isRequired,
 };
