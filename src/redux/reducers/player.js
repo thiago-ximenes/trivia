@@ -1,8 +1,8 @@
-import { SET_USER_PLAYER, SET_USER_SCORE } from '../actions';
+import { SET_USER_PLAYER, SET_USER_SCORE, SET_COUNT } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -19,6 +19,11 @@ const player = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: action.payload,
+    };
+  case SET_COUNT:
+    return {
+      ...state,
+      assertions: action.value.count,
     };
   default:
     return state;

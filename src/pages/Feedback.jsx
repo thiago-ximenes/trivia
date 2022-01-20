@@ -29,9 +29,9 @@ class Feedback extends Component {
   };
 
   feedbackMessage = () => {
-    const { result } = this.props;
-    console.log(result);
-    if (result < average) {
+    const { assertion } = this.props;
+    console.log(assertion);
+    if (assertion < average) {
       return (
         <div>
           Could be better...
@@ -43,7 +43,7 @@ class Feedback extends Component {
   };
 
   render() {
-    const { score, name } = this.props;
+    const { score, name, assertion } = this.props;
     const { img } = this.state;
     return (
       <div>
@@ -59,8 +59,10 @@ class Feedback extends Component {
           {this.feedbackMessage()}
         </div>
         <span data-testid="header-score">
-          {`${score}`}
+          {score}
         </span>
+        <h1 data-testid="feedback-total-score">{score}</h1>
+        <h1 data-testid="feedback-total-question">{assertion }</h1>
         <RankingButton />
         <RePlayButton />
       </div>
@@ -69,14 +71,14 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  result: state.correctAnswersCount,
+  assertion: state.player.assertions,
   score: state.player.score,
   gravatarEmail: state.player.gravatarEmail,
   name: state.player.name,
 });
 
 Feedback.propTypes = {
-  result: PropTypes.number.isRequired,
+  assertion: PropTypes.number.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
