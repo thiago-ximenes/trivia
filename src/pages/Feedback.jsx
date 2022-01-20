@@ -1,4 +1,3 @@
-import md5 from 'crypto-js/md5';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -8,29 +7,8 @@ import RePlayButton from '../components/RePlayButton';
 const average = 3;
 
 class Feedback extends Component {
-  constructor() {
-    super();
-    this.state = {
-      img: 'https//',
-    };
-  }
-
-  componentDidMount() {
-    this.getImage();
-  }
-
-  getImage = () => {
-    const { gravatarEmail } = this.props;
-
-    const hash = md5(gravatarEmail);
-    fetch(`https://www.gravatar.com/avatar/${hash}`).then(() => {
-      this.setState({ img: `https://www.gravatar.com/avatar/${hash}` });
-    });
-  };
-
   feedbackMessage = () => {
     const { assertion } = this.props;
-    console.log(assertion);
     if (assertion < average) {
       return (
         <div>
@@ -43,8 +21,7 @@ class Feedback extends Component {
   };
 
   render() {
-    const { score, name, assertion } = this.props;
-    const { img } = this.state;
+    const { score, name, assertion, img } = this.props;
     return (
       <div>
         <img
@@ -73,15 +50,15 @@ class Feedback extends Component {
 const mapStateToProps = (state) => ({
   assertion: state.player.assertions,
   score: state.player.score,
-  gravatarEmail: state.player.gravatarEmail,
   name: state.player.name,
+  img: state.player.img,
 });
 
 Feedback.propTypes = {
   assertion: PropTypes.number.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  img: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
